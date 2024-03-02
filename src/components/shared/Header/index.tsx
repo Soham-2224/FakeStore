@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom"
 
-// --shadcn--
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
 // --components--
 import CartBtn from "./CartBtn"
 
@@ -16,20 +13,22 @@ export default function Header() {
     return (
         <header className="py-3 border-b | zIndex__header ">
             <div className="flex justify-between items-center mx-auto | max-section-width section-padding">
-                <h1 className=" text-2xl font-bold text-primary">FakeStore</h1>
+                <Link to="/">
+                    <h1 className=" text-2xl font-bold text-primary">FakeStore</h1>
+                </Link>
 
                 {isUserLoggedIn ? (
                     <div className="flex items-center gap-4">
                         <CartBtn />
 
                         <Link to="/profile/2">
-                            <Avatar className="cursor-pointer">
-                                <AvatarImage
-                                    src="https://github.com/shadcn.png"
-                                    alt="@shadcn"
+                            <div className=" w-10 aspect-square rounded-full overflow-hidden">
+                                <img
+                                    className=" object-cover"
+                                    src="https://i.pravatar.cc/150?img=67"
+                                    alt="profile image"
                                 />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
+                            </div>
                         </Link>
                     </div>
                 ) : null}
