@@ -49,7 +49,7 @@ const Products = () => {
     if (isLoading) {
         return (
             <div className=" mt-8">
-                <div className="w-full grid grid-cols-4 gap-6">
+                <div className="w-full | cardGrid">
                     {new Array(8).fill(true).map((_, idx) => (
                         <CardSkeleton key={idx} />
                     ))}
@@ -60,7 +60,7 @@ const Products = () => {
 
     return (
         <div className=" mt-8">
-            <div className="w-full grid grid-cols-4 gap-6">
+            <div className="w-full | cardGrid">
                 {!paginatedData.length ? (
                     <h1>No products found</h1>
                 ) : (

@@ -1,16 +1,21 @@
 import { useNavigate, useParams } from "react-router-dom"
 
 // --rtk--
-import { useGetUserDetailsQuery } from "@/store/services/user"
+import { useDeleteUserMutation, useGetUserDetailsQuery } from "@/store/services/user"
 
 // --components--
 import { toast } from "sonner"
-
-// --lib--
-import { useLocalStorage } from "@/lib/hooks/useLocalStorage"
+import EditProfileForm from "./EditProfileForm"
+import CustomDialog from "@/components/ui/customDialog"
 import { Label } from "@/components/ui/label"
 import BackArrowBtn from "@/components/shared/BackArrowBtn"
 import { Button } from "@/components/ui/button"
+import DummyLoading from "@/components/shared/DummyLoading"
+
+// --lib--
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage"
+
+// --icons--
 import { EditIcon, LogOutIcon, TrashIcon } from "lucide-react"
 
 const LabelValue = ({ label, children }: { label: string; children: React.ReactNode }) => {
@@ -33,35 +38,47 @@ export default function ProfilePage() {
     }
 
     const { data, isLoading, isError } = useGetUserDetailsQuery({ id: userId ?? "2" })
+    const [deleteUser, { isLoading : isDeleteReqLoading }] = useDeleteUserMutation()
 
     const handleLogout = () => {
         setItem(false)
         navigate("/login")
     }
 
+    const handleDeleteAcc = () => {
+        toast.promise(deleteUser({ id: userId ?? "2" }), {
+            loading: "Deleting account...",
+            success: () => {
+                navigate("/login")
+                return "Account Deleted!"
+            },
+            error: "Error during deleting aaccount"
+        })
+    }
+
     if (isError) return toast.error("something went wrong")
 
-    if (isLoading) return <h1>Loading...</h1>
+    if (isLoading) return <DummyLoading />
 
     return (
         <div className="my-8">
             <BackArrowBtn />
-            <div className="flex items-center justify-between mt-8">
-                <div className="flex items-center gap-6">
+            <div className="flex flex-col md:flex-row gap-y-8  justify-between mt-8">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <img
-                        className=" w-40 aspect-square rounded-full"
+                        className=" w-40 aspect-square rounded-full max-sm:mx-auto"
                         src="https://i.pravatar.cc/150?img=67" // just for fake image, not in production
                         alt={data?.username}
                     />
                     <div>
-                        <h2 className=" text-h2 capitalize">
+                        <h2 className=" text-h2 capitalize ">
                             {data?.name?.firstname} {data?.name?.lastname}
                         </h2>
                         <h2 className=" text-h4">{data?.username}</h2>
                         <div className="mt-4 flex flex-col gap-1">
                             <LabelValue label="Email">{data?.email}</LabelValue>
                             <LabelValue label="Phone number">{data?.phone}</LabelValue>
-                            <div className="flex gap-6">
+                            <div className="flex flex-col lg:flex-row gap-y-1 gap-x-6">
                                 <LabelValue label="Address">
                                     {data?.address?.street}, {data?.address?.city}
                                 </LabelValue>
@@ -71,13 +88,20 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <div className="flex">
-                    <Button>
-                        <EditIcon
-                            size={18}
-                            className=" mr-2"
-                        />
-                        Edit profile
-                    </Button>
+                    <CustomDialog
+                        title="Edit profile"
+                        dialogContent={<EditProfileForm originalData={data} />}
+                        contentClassNames=" sm:max-w-[50rem]"
+                        triggerClassNames=" max-sm:w-full"
+                    >
+                        <Button className="max-sm:w-full">
+                            <EditIcon
+                                size={18}
+                                className=" mr-2"
+                            />
+                            Edit profile
+                        </Button>
+                    </CustomDialog>
                 </div>
             </div>
             <div className="flex items-center justify-end gap-4 border-t mt-10 pt-10">
@@ -91,7 +115,11 @@ export default function ProfilePage() {
                     />
                     Logout
                 </Button>
-                <Button variant="destructive">
+                <Button
+                    disabled={isDeleteReqLoading}
+                    onClick={handleDeleteAcc}
+                    variant="destructive"
+                >
                     <TrashIcon
                         size={18}
                         className=" mr-2"

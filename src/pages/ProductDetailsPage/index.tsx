@@ -1,12 +1,19 @@
+import { useParams } from "react-router-dom"
+
+// --components--
 import BackArrowBtn from "@/components/shared/BackArrowBtn"
+import DummyLoading from "@/components/shared/DummyLoading"
 import StarRating from "@/components/shared/StarRating"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+
+// --rtk--
+import { useDispatch } from "react-redux"
 import { addToCart } from "@/store/features/cartSlice"
 import { useGetProductDetailsQuery } from "@/store/services/product"
+
+// --icons--
 import { ShoppingCartIcon } from "lucide-react"
-import { useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
-import { toast } from "sonner"
 
 const ProductDetailsPage = () => {
     let { productId } = useParams()
@@ -25,21 +32,21 @@ const ProductDetailsPage = () => {
 
 
     if (isLoading) {
-        return <h1>Loading...</h1>
+        return <DummyLoading />
     }
 
     return (
         <section className=" py-8">
             <BackArrowBtn />
-            <div className="grid grid-cols-3 place-items-center gap-10 mt-6">
-                <div className="p-10 border grid place-content-center rounded-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10 mt-6">
+                <div className="p-10 border rounded-xl mx-auto">
                     <img
                         src={data?.image}
                         alt={data?.title}
                         className=" aspect-square object-contain"
                     />
                 </div>
-                <div className=" col-span-2">
+                <div className=" lg:col-span-2">
                     <h2 className=" text-h2 font-semibold">{data?.title}</h2>
                     <p className=" text-lg text-secondary-foreground mt-2">{data?.description}</p>
                     <div className="flex justify-between items-center mt-4">

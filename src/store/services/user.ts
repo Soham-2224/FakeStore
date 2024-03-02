@@ -21,9 +21,22 @@ export const userApi = createApi({
                 body: data
             })
         }),
-        getUserDetails: builder.query<UserDetails, {id: string}>({
+        getUserDetails: builder.query<UserDetails, { id: string }>({
             query: ({ id }) => ({
                 url: `/users/${id}`
+            })
+        }),
+        updateUserDetails: builder.mutation<UserDetails, Partial<UserDetails>>({
+            query: ({ ...data }) => ({
+                url: "/users/2",
+                method: "PUT",
+                body: JSON.stringify(data)
+            })
+        }),
+        deleteUser: builder.mutation<{id: string}, {id: string}>({
+            query: ({id}) => ({
+                url: `/users/${id}`,
+                method: "DELETE",
             })
         })
         // fetchCart: builder.query<userCartResponse, CartApiArgs>({
@@ -35,4 +48,4 @@ export const userApi = createApi({
     })
 })
 
-export const { useLoginUserMutation, useGetUserDetailsQuery} = userApi
+export const { useLoginUserMutation, useGetUserDetailsQuery, useUpdateUserDetailsMutation, useDeleteUserMutation} = userApi

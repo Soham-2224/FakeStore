@@ -33,7 +33,7 @@ export default function CartPage() {
         <section className=" py-8">
             <BackArrowBtn />
             <h3 className=" text-h3 mt-4">Price Details</h3>
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between flex-col md:flex-row md:items-center gap-y-4">
                 <div>
                     <div className="flex items-center gap-4 mt-4">
                         <Label className=" label">Price ({cartItems.length} items):</Label>
@@ -72,7 +72,7 @@ export default function CartPage() {
                 </div>
             </div>
             {paginatedData.length ? (
-                <div className="grid grid-cols-3 place-items-center gap-10 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10 mt-6">
                     {paginatedData.map((item) => (
                         <CartCard
                             isBigCard
