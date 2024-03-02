@@ -1,0 +1,14 @@
+ Improvements that i can make -
+ - Use Nextjs instead of plain react (as suggested by react docs - "https://react.dev/learn/start-a-new-react-project").
+ - We could use tanstack query instead of rtk query.
+ - skeletons for nice user experience.
+ - Implement real authentication.
+ - Alert dialog for buttons like (delete accout, logout, clear cart, etc)
+ - I could implement zod schemas everywhere like i've done for forms(for more safety - like loginSchema.parseSafe(data)).
+
+ Thoughts while development -
+ - The very first thing that came to my mind was which framework should i use. Because from last 6 
+   months i've continuosly worked in nextjs. But i chose react due to the requirement of the problem statement.
+ - The second thing was i am used to Tanstack query, but i realized that the problem stmt asks for rtk query which i never
+   used, so this was a good learning experience for that.
+ - Obviously this is not my 100%, as this is a practice project.
